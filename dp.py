@@ -6,13 +6,15 @@ ORDERS_FILE = "orders.json"
 load_dotenv()
 
 def connect_psql():
-    return psycopg2.connect(
-        dbname=os.getenv("DATABASE_NAME"),
-        user=os.getenv("DATABASE_USER"),
-        password=os.getenv("DATABASE_PASSWORD"),
-        host=os.getenv("DATABASE_HOST"),
-        port=os.getenv("DATABASE_PORT")
-    )
+    db_name = os.getenv("DATABASE_NAME")
+    db_user = os.getenv("DATABASE_USER")
+    db_pass = os.getenv("DATABASE_PASSWORD")
+    db_host = os.getenv("DATABASE_HOST")
+    db_port = os.getenv("DATABASE_PORT")
+
+    DATABASE_URL = f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}?sslmode=require"
+
+    return psycopg2.connect(DATABASE_URL)
 
 def get_all_products():
     conn = connect_psql()
